@@ -6,7 +6,7 @@ import wikipedia
 import pywhatkit
 from time import *
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 engine = pyttsx3.init()
 
