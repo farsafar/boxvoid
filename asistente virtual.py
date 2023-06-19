@@ -2,16 +2,15 @@ import openai
 import pyttsx3
 import speech_recognition as sr
 from googlesearch import search
-import wikipedia
-import pywhatkit
-from time import *
 
-openai.api_key = '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'
+# Configura tu clave de API
+openai.api_key = 'TU_CLAVE_DE_API'
 
+# Inicializa el motor de síntesis de voz
 engine = pyttsx3.init()
 
 def obtener_respuesta(pregunta):
-
+    # Envía la pregunta a la API de ChatGPT
     respuesta = openai.Completion.create(
         engine='text-davinci-003',
         prompt=pregunta,
@@ -22,63 +21,50 @@ def obtener_respuesta(pregunta):
         timeout=15
     )
 
-   
+    # Extrae y devuelve la respuesta generada por ChatGPT
     return respuesta.choices[0].text.strip()
 
+# Inicializa el reconocimiento de voz
 r = sr.Recognizer()
 
-
+# Bucle principal del asistente virtual
 while True:
-    
+    # Escucha la entrada de voz del usuario
     with sr.Microphone() as source:
         print("Di algo...")
         audio = r.listen(source)
 
     try:
-        
+        # Utiliza el reconocimiento de voz para convertir el audio en texto
         entrada = r.recognize_google(audio, language="es")
 
-        
+        # Finaliza el bucle si el usuario dice "salir"
         if entrada.lower() == "salir":
             break
 
         print("Usuario: " + entrada)
-        engine.say(entrada)
 
-        if "Busca" in entrada:
-             
-             wikipedia.set_lang('es')
-             busqueda = entrada.replace('Busca', '')
-             respuestas = wikipedia.summary(busqueda , sentences = 5 , chars = 0 , auto_suggest = True , redirect = True ) 
-             engine.say(respuestas)
-             engine.runAndWait()
-        
-        if 'Reproduce' in entrada:
-            Videos = entrada.replace('Reproduce', '')
-            pywhatkit.playonyt(Videos)
+        if "buscar en Google" in entrada:
+            # Realiza una búsqueda en Google
+            busqueda = entrada.replace("buscar en Google", "").strip()
+            resultados = search(busqueda, num_results=1)
 
-        if 'hora' in entrada:
-             hora = strftime('%H:%M %p')
-             engine.say =('Son las '+hora)
-             engine.runAndWait()
+            # Obtiene el primer resultado de búsqueda
+            primer_resultado = next(resultados, None)
 
-
-
-
-
-            
-
-
+            if primer_resultado:
+                respuesta = "Aquí tienes el resultado de búsqueda en Google: " + primer_resultado
+            else:
+                respuesta = "No se encontraron resultados en Google para esa búsqueda."
 
         else:
-            
+    
             respuesta = obtener_respuesta(entrada)
 
-
-        
+        # Imprime la respuesta en la consola
         print("Asistente: " + respuesta)
 
-        
+        # Utiliza el motor de síntesis de voz para reproducir la respuesta
         engine.say(respuesta)
         engine.runAndWait()
 
