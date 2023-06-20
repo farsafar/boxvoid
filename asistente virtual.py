@@ -3,10 +3,10 @@ import pyttsx3
 import speech_recognition as sr
 from googlesearch import search
 
-# Configura tu clave de API
-openai.api_key = 'TU_CLAVE_DE_API'
 
-# Inicializa el motor de síntesis de voz
+openai.api_key = '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'
+
+
 engine = pyttsx3.init()
 
 def obtener_respuesta(pregunta):
@@ -21,35 +21,35 @@ def obtener_respuesta(pregunta):
         timeout=15
     )
 
-    # Extrae y devuelve la respuesta generada por ChatGPT
+
     return respuesta.choices[0].text.strip()
 
-# Inicializa el reconocimiento de voz
+
 r = sr.Recognizer()
 
-# Bucle principal del asistente virtual
+
 while True:
-    # Escucha la entrada de voz del usuario
+    
     with sr.Microphone() as source:
         print("Di algo...")
         audio = r.listen(source)
 
     try:
-        # Utiliza el reconocimiento de voz para convertir el audio en texto
+        
         entrada = r.recognize_google(audio, language="es")
 
-        # Finaliza el bucle si el usuario dice "salir"
+        
         if entrada.lower() == "salir":
             break
 
         print("Usuario: " + entrada)
 
         if "buscar en Google" in entrada:
-            # Realiza una búsqueda en Google
+            
             busqueda = entrada.replace("buscar en Google", "").strip()
             resultados = search(busqueda, num_results=1)
 
-            # Obtiene el primer resultado de búsqueda
+           
             primer_resultado = next(resultados, None)
 
             if primer_resultado:
@@ -61,10 +61,10 @@ while True:
     
             respuesta = obtener_respuesta(entrada)
 
-        # Imprime la respuesta en la consola
+       
         print("Asistente: " + respuesta)
 
-        # Utiliza el motor de síntesis de voz para reproducir la respuesta
+        
         engine.say(respuesta)
         engine.runAndWait()
 
