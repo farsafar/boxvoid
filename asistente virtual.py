@@ -10,7 +10,6 @@ openai.api_key = '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'
 engine = pyttsx3.init()
 
 def obtener_respuesta(pregunta):
-    # Envía la pregunta a la API de ChatGPT
     respuesta = openai.Completion.create(
         engine='text-davinci-003',
         prompt=pregunta,
