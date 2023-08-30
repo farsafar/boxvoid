@@ -4,7 +4,7 @@ import speech_recognition as sr
 from googlesearch import search
 
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 engine = pyttsx3.init()
