@@ -2,9 +2,14 @@ import openai
 import pyttsx3
 import speech_recognition as sr
 from googlesearch import search
+from gtts import gTTS
+import os
 
+inicio = gTTS("Hola soy boxvoid, en que te puedo ayudar", lang="es")
+inicio.save("inicio.mp3")
+os.system("mpg123 inicio.mp3")
 
-openai.api_key = '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'
+openai.api_key = 'tu api key '
 
 
 engine = pyttsx3.init()
@@ -64,8 +69,10 @@ while True:
         print("Asistente: " + respuesta)
 
         
-        engine.say(respuesta)
-        engine.runAndWait()
+        RespuestaTTS = gTTS(respuesta, lang="es")
+        RespuestaTTS.save("respuesta.mp3")
+        os.system("mpg123 respuesta.mp3")
+        os.system("rm -r respuesta.mp3")
 
     except sr.UnknownValueError:
         print("No se pudo entender el audio.")
